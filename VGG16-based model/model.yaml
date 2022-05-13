@@ -1,0 +1,686 @@
+backend: tensorflow
+class_name: Functional
+config:
+  input_layers:
+  - [input_4, 0, 0]
+  layers:
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 256, 256, 3]
+      dtype: float32
+      name: input_4
+      ragged: false
+      sparse: false
+    inbound_nodes: []
+    name: input_4
+  - class_name: Sequential
+    config:
+      layers:
+      - class_name: InputLayer
+        config:
+          batch_input_shape: !!python/tuple [null, null, null, 3]
+          dtype: float32
+          name: random_flip_1_input
+          ragged: false
+          sparse: false
+      - class_name: RandomFlip
+        config: {dtype: float32, mode: horizontal, name: random_flip_1, seed: null,
+          trainable: true}
+      - class_name: RandomRotation
+        config: {dtype: float32, factor: 0.2, fill_mode: reflect, interpolation: bilinear,
+          name: random_rotation_1, seed: null, trainable: true}
+      name: sequential_1
+    inbound_nodes:
+    - - - input_4
+        - 0
+        - 0
+        - {}
+    name: sequential_1
+  - class_name: TensorFlowOpLayer
+    config:
+      constants:
+        1: !!python/object/apply:numpy.core.multiarray._reconstruct
+          args:
+          - &id001 !!python/name:numpy.ndarray ''
+          - !!python/tuple [0]
+          - !!binary |
+            Yg==
+          state: !!python/tuple
+          - 1
+          - !!python/tuple [2]
+          - &id002 !!python/object/apply:numpy.dtype
+            args: [i4, 0, 1]
+            state: !!python/tuple [3, <, null, null, null, -1, -1, 0]
+          - false
+          - !!binary |
+            AAAAAAAAAAA=
+        2: !!python/object/apply:numpy.core.multiarray._reconstruct
+          args:
+          - *id001
+          - !!python/tuple [0]
+          - !!binary |
+            Yg==
+          state: !!python/tuple
+          - 1
+          - !!python/tuple [2]
+          - *id002
+          - false
+          - !!binary |
+            AAAAAAAAAAA=
+        3: !!python/object/apply:numpy.core.multiarray._reconstruct
+          args:
+          - *id001
+          - !!python/tuple [0]
+          - !!binary |
+            Yg==
+          state: !!python/tuple
+          - 1
+          - !!python/tuple [2]
+          - *id002
+          - false
+          - !!binary |
+            AQAAAP////8=
+      dtype: float32
+      name: strided_slice_1
+      node_def:
+        attr:
+          Index: {type: DT_INT32}
+          T: {type: DT_FLOAT}
+          begin_mask: {i: '2'}
+          ellipsis_mask: {i: '1'}
+          end_mask: {i: '2'}
+          new_axis_mask: {i: '0'}
+          shrink_axis_mask: {i: '0'}
+        input: [sequential_1/random_rotation_1/transform_1/ImageProjectiveTransformV2,
+          strided_slice_1/begin, strided_slice_1/end, strided_slice_1/strides]
+        name: strided_slice_1
+        op: StridedSlice
+      trainable: true
+    inbound_nodes:
+    - - - sequential_1
+        - 1
+        - 0
+        - {}
+    name: tf_op_layer_strided_slice_1
+  - class_name: TensorFlowOpLayer
+    config:
+      constants:
+        1: !!python/object/apply:numpy.core.multiarray._reconstruct
+          args:
+          - *id001
+          - !!python/tuple [0]
+          - !!binary |
+            Yg==
+          state: !!python/tuple
+          - 1
+          - !!python/tuple [3]
+          - !!python/object/apply:numpy.dtype
+            args: [f4, 0, 1]
+            state: !!python/tuple [3, <, null, null, null, -1, -1, 0]
+          - false
+          - !!binary |
+            xeDPwtmO6cIpXPfC
+      dtype: float32
+      name: BiasAdd_1
+      node_def:
+        attr:
+          T: {type: DT_FLOAT}
+          data_format: {s: TkhXQw==}
+        input: [strided_slice_1, BiasAdd_1/bias]
+        name: BiasAdd_1
+        op: BiasAdd
+      trainable: true
+    inbound_nodes:
+    - - - tf_op_layer_strided_slice_1
+        - 0
+        - 0
+        - {}
+    name: tf_op_layer_BiasAdd_1
+  - class_name: Functional
+    config:
+      input_layers:
+      - [input_3, 0, 0]
+      layers:
+      - class_name: InputLayer
+        config:
+          batch_input_shape: !!python/tuple [null, 256, 256, 3]
+          dtype: float32
+          name: input_3
+          ragged: false
+          sparse: false
+        inbound_nodes: []
+        name: input_3
+      - class_name: Conv2D
+        config:
+          activation: relu
+          activity_regularizer: null
+          bias_constraint: null
+          bias_initializer:
+            class_name: Zeros
+            config: {}
+          bias_regularizer: null
+          data_format: channels_last
+          dilation_rate: &id003 !!python/tuple [1, 1]
+          dtype: float32
+          filters: 64
+          groups: 1
+          kernel_constraint: null
+          kernel_initializer:
+            class_name: GlorotUniform
+            config: {seed: null}
+          kernel_regularizer: null
+          kernel_size: !!python/tuple [3, 3]
+          name: block1_conv1
+          padding: same
+          strides: &id004 !!python/tuple [1, 1]
+          trainable: false
+          use_bias: true
+        inbound_nodes:
+        - - - input_3
+            - 0
+            - 0
+            - {}
+        name: block1_conv1
+      - class_name: Conv2D
+        config:
+          activation: relu
+          activity_regularizer: null
+          bias_constraint: null
+          bias_initializer:
+            class_name: Zeros
+            config: {}
+          bias_regularizer: null
+          data_format: channels_last
+          dilation_rate: *id003
+          dtype: float32
+          filters: 64
+          groups: 1
+          kernel_constraint: null
+          kernel_initializer:
+            class_name: GlorotUniform
+            config: {seed: null}
+          kernel_regularizer: null
+          kernel_size: !!python/tuple [3, 3]
+          name: block1_conv2
+          padding: same
+          strides: *id004
+          trainable: false
+          use_bias: true
+        inbound_nodes:
+        - - - block1_conv1
+            - 0
+            - 0
+            - {}
+        name: block1_conv2
+      - class_name: MaxPooling2D
+        config:
+          data_format: channels_last
+          dtype: float32
+          name: block1_pool
+          padding: valid
+          pool_size: !!python/tuple [2, 2]
+          strides: !!python/tuple [2, 2]
+          trainable: false
+        inbound_nodes:
+        - - - block1_conv2
+            - 0
+            - 0
+            - {}
+        name: block1_pool
+      - class_name: Conv2D
+        config:
+          activation: relu
+          activity_regularizer: null
+          bias_constraint: null
+          bias_initializer:
+            class_name: Zeros
+            config: {}
+          bias_regularizer: null
+          data_format: channels_last
+          dilation_rate: *id003
+          dtype: float32
+          filters: 128
+          groups: 1
+          kernel_constraint: null
+          kernel_initializer:
+            class_name: GlorotUniform
+            config: {seed: null}
+          kernel_regularizer: null
+          kernel_size: !!python/tuple [3, 3]
+          name: block2_conv1
+          padding: same
+          strides: *id004
+          trainable: false
+          use_bias: true
+        inbound_nodes:
+        - - - block1_pool
+            - 0
+            - 0
+            - {}
+        name: block2_conv1
+      - class_name: Conv2D
+        config:
+          activation: relu
+          activity_regularizer: null
+          bias_constraint: null
+          bias_initializer:
+            class_name: Zeros
+            config: {}
+          bias_regularizer: null
+          data_format: channels_last
+          dilation_rate: *id003
+          dtype: float32
+          filters: 128
+          groups: 1
+          kernel_constraint: null
+          kernel_initializer:
+            class_name: GlorotUniform
+            config: {seed: null}
+          kernel_regularizer: null
+          kernel_size: !!python/tuple [3, 3]
+          name: block2_conv2
+          padding: same
+          strides: *id004
+          trainable: false
+          use_bias: true
+        inbound_nodes:
+        - - - block2_conv1
+            - 0
+            - 0
+            - {}
+        name: block2_conv2
+      - class_name: MaxPooling2D
+        config:
+          data_format: channels_last
+          dtype: float32
+          name: block2_pool
+          padding: valid
+          pool_size: !!python/tuple [2, 2]
+          strides: !!python/tuple [2, 2]
+          trainable: false
+        inbound_nodes:
+        - - - block2_conv2
+            - 0
+            - 0
+            - {}
+        name: block2_pool
+      - class_name: Conv2D
+        config:
+          activation: relu
+          activity_regularizer: null
+          bias_constraint: null
+          bias_initializer:
+            class_name: Zeros
+            config: {}
+          bias_regularizer: null
+          data_format: channels_last
+          dilation_rate: *id003
+          dtype: float32
+          filters: 256
+          groups: 1
+          kernel_constraint: null
+          kernel_initializer:
+            class_name: GlorotUniform
+            config: {seed: null}
+          kernel_regularizer: null
+          kernel_size: !!python/tuple [3, 3]
+          name: block3_conv1
+          padding: same
+          strides: *id004
+          trainable: false
+          use_bias: true
+        inbound_nodes:
+        - - - block2_pool
+            - 0
+            - 0
+            - {}
+        name: block3_conv1
+      - class_name: Conv2D
+        config:
+          activation: relu
+          activity_regularizer: null
+          bias_constraint: null
+          bias_initializer:
+            class_name: Zeros
+            config: {}
+          bias_regularizer: null
+          data_format: channels_last
+          dilation_rate: *id003
+          dtype: float32
+          filters: 256
+          groups: 1
+          kernel_constraint: null
+          kernel_initializer:
+            class_name: GlorotUniform
+            config: {seed: null}
+          kernel_regularizer: null
+          kernel_size: !!python/tuple [3, 3]
+          name: block3_conv2
+          padding: same
+          strides: *id004
+          trainable: false
+          use_bias: true
+        inbound_nodes:
+        - - - block3_conv1
+            - 0
+            - 0
+            - {}
+        name: block3_conv2
+      - class_name: Conv2D
+        config:
+          activation: relu
+          activity_regularizer: null
+          bias_constraint: null
+          bias_initializer:
+            class_name: Zeros
+            config: {}
+          bias_regularizer: null
+          data_format: channels_last
+          dilation_rate: *id003
+          dtype: float32
+          filters: 256
+          groups: 1
+          kernel_constraint: null
+          kernel_initializer:
+            class_name: GlorotUniform
+            config: {seed: null}
+          kernel_regularizer: null
+          kernel_size: !!python/tuple [3, 3]
+          name: block3_conv3
+          padding: same
+          strides: *id004
+          trainable: false
+          use_bias: true
+        inbound_nodes:
+        - - - block3_conv2
+            - 0
+            - 0
+            - {}
+        name: block3_conv3
+      - class_name: MaxPooling2D
+        config:
+          data_format: channels_last
+          dtype: float32
+          name: block3_pool
+          padding: valid
+          pool_size: !!python/tuple [2, 2]
+          strides: !!python/tuple [2, 2]
+          trainable: false
+        inbound_nodes:
+        - - - block3_conv3
+            - 0
+            - 0
+            - {}
+        name: block3_pool
+      - class_name: Conv2D
+        config:
+          activation: relu
+          activity_regularizer: null
+          bias_constraint: null
+          bias_initializer:
+            class_name: Zeros
+            config: {}
+          bias_regularizer: null
+          data_format: channels_last
+          dilation_rate: *id003
+          dtype: float32
+          filters: 512
+          groups: 1
+          kernel_constraint: null
+          kernel_initializer:
+            class_name: GlorotUniform
+            config: {seed: null}
+          kernel_regularizer: null
+          kernel_size: !!python/tuple [3, 3]
+          name: block4_conv1
+          padding: same
+          strides: *id004
+          trainable: false
+          use_bias: true
+        inbound_nodes:
+        - - - block3_pool
+            - 0
+            - 0
+            - {}
+        name: block4_conv1
+      - class_name: Conv2D
+        config:
+          activation: relu
+          activity_regularizer: null
+          bias_constraint: null
+          bias_initializer:
+            class_name: Zeros
+            config: {}
+          bias_regularizer: null
+          data_format: channels_last
+          dilation_rate: *id003
+          dtype: float32
+          filters: 512
+          groups: 1
+          kernel_constraint: null
+          kernel_initializer:
+            class_name: GlorotUniform
+            config: {seed: null}
+          kernel_regularizer: null
+          kernel_size: !!python/tuple [3, 3]
+          name: block4_conv2
+          padding: same
+          strides: *id004
+          trainable: true
+          use_bias: true
+        inbound_nodes:
+        - - - block4_conv1
+            - 0
+            - 0
+            - {}
+        name: block4_conv2
+      - class_name: Conv2D
+        config:
+          activation: relu
+          activity_regularizer: null
+          bias_constraint: null
+          bias_initializer:
+            class_name: Zeros
+            config: {}
+          bias_regularizer: null
+          data_format: channels_last
+          dilation_rate: *id003
+          dtype: float32
+          filters: 512
+          groups: 1
+          kernel_constraint: null
+          kernel_initializer:
+            class_name: GlorotUniform
+            config: {seed: null}
+          kernel_regularizer: null
+          kernel_size: !!python/tuple [3, 3]
+          name: block4_conv3
+          padding: same
+          strides: *id004
+          trainable: true
+          use_bias: true
+        inbound_nodes:
+        - - - block4_conv2
+            - 0
+            - 0
+            - {}
+        name: block4_conv3
+      - class_name: MaxPooling2D
+        config:
+          data_format: channels_last
+          dtype: float32
+          name: block4_pool
+          padding: valid
+          pool_size: !!python/tuple [2, 2]
+          strides: !!python/tuple [2, 2]
+          trainable: true
+        inbound_nodes:
+        - - - block4_conv3
+            - 0
+            - 0
+            - {}
+        name: block4_pool
+      - class_name: Conv2D
+        config:
+          activation: relu
+          activity_regularizer: null
+          bias_constraint: null
+          bias_initializer:
+            class_name: Zeros
+            config: {}
+          bias_regularizer: null
+          data_format: channels_last
+          dilation_rate: *id003
+          dtype: float32
+          filters: 512
+          groups: 1
+          kernel_constraint: null
+          kernel_initializer:
+            class_name: GlorotUniform
+            config: {seed: null}
+          kernel_regularizer: null
+          kernel_size: !!python/tuple [3, 3]
+          name: block5_conv1
+          padding: same
+          strides: *id004
+          trainable: true
+          use_bias: true
+        inbound_nodes:
+        - - - block4_pool
+            - 0
+            - 0
+            - {}
+        name: block5_conv1
+      - class_name: Conv2D
+        config:
+          activation: relu
+          activity_regularizer: null
+          bias_constraint: null
+          bias_initializer:
+            class_name: Zeros
+            config: {}
+          bias_regularizer: null
+          data_format: channels_last
+          dilation_rate: *id003
+          dtype: float32
+          filters: 512
+          groups: 1
+          kernel_constraint: null
+          kernel_initializer:
+            class_name: GlorotUniform
+            config: {seed: null}
+          kernel_regularizer: null
+          kernel_size: !!python/tuple [3, 3]
+          name: block5_conv2
+          padding: same
+          strides: *id004
+          trainable: true
+          use_bias: true
+        inbound_nodes:
+        - - - block5_conv1
+            - 0
+            - 0
+            - {}
+        name: block5_conv2
+      - class_name: Conv2D
+        config:
+          activation: relu
+          activity_regularizer: null
+          bias_constraint: null
+          bias_initializer:
+            class_name: Zeros
+            config: {}
+          bias_regularizer: null
+          data_format: channels_last
+          dilation_rate: *id003
+          dtype: float32
+          filters: 512
+          groups: 1
+          kernel_constraint: null
+          kernel_initializer:
+            class_name: GlorotUniform
+            config: {seed: null}
+          kernel_regularizer: null
+          kernel_size: !!python/tuple [3, 3]
+          name: block5_conv3
+          padding: same
+          strides: *id004
+          trainable: true
+          use_bias: true
+        inbound_nodes:
+        - - - block5_conv2
+            - 0
+            - 0
+            - {}
+        name: block5_conv3
+      - class_name: MaxPooling2D
+        config:
+          data_format: channels_last
+          dtype: float32
+          name: block5_pool
+          padding: valid
+          pool_size: !!python/tuple [2, 2]
+          strides: !!python/tuple [2, 2]
+          trainable: true
+        inbound_nodes:
+        - - - block5_conv3
+            - 0
+            - 0
+            - {}
+        name: block5_pool
+      name: vgg16
+      output_layers:
+      - [block5_pool, 0, 0]
+    inbound_nodes:
+    - - - tf_op_layer_BiasAdd_1
+        - 0
+        - 0
+        - {training: false}
+    name: vgg16
+  - class_name: GlobalAveragePooling2D
+    config: {data_format: channels_last, dtype: float32, name: global_average_pooling2d_1,
+      trainable: true}
+    inbound_nodes:
+    - - - vgg16
+        - 1
+        - 0
+        - {}
+    name: global_average_pooling2d_1
+  - class_name: Dropout
+    config: {dtype: float32, name: dropout_1, noise_shape: null, rate: 0.2, seed: null,
+      trainable: true}
+    inbound_nodes:
+    - - - global_average_pooling2d_1
+        - 0
+        - 0
+        - {}
+    name: dropout_1
+  - class_name: Dense
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      dtype: float32
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: GlorotUniform
+        config: {seed: null}
+      kernel_regularizer: null
+      name: dense_1
+      trainable: true
+      units: 1
+      use_bias: true
+    inbound_nodes:
+    - - - dropout_1
+        - 0
+        - 0
+        - {}
+    name: dense_1
+  name: functional_3
+  output_layers:
+  - [dense_1, 0, 0]
+keras_version: 2.4.0
